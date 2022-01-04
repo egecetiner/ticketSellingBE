@@ -3,6 +3,7 @@ import { bucket, db } from './config/firebase';
 
 
 
+
 type EventType = {
   title : string,
   description: string,
@@ -145,18 +146,32 @@ const getAllEvents = async (req: Request, res: Response) => {
       const imageUpload= async (req: Req, res: Response) => {
 
         const { body: { uploadUri, fileName }} = req
+        console.log("req.body", uploadUri)
         const imageBucket = "eventImages/";
         const destination = `${imageBucket}${fileName}`;
+        console.log("bucket",bucket)
+
+        const options = {
+          destination: destination,
+          
+          gzip: true,
+          validation: 'crc32c',
+          metadata: {
+            cacheControl: 'public, max-age=31536000',
+            metadata: {
+              event: 'Fall trip to the zoo'
+            }
+          }
+        };
 
      try {
        // Uploads a local file to the bucket
-      await bucket.upload(uploadUri, {
-        destination: destination,
-        // Support for HTTP requests made with `Accept-Encoding: gzip`
-        gzip: true,
-        metadata: {
-          cacheControl: 'public, max-age=31536000',
-      },
+       await bucket.upload(uploadUri, options, function(err, file) {
+        // Your bucket now contains:
+        // - "new-image.png" (with the contents of `local-image.png')
+        console.log("file", file)
+        console.log("error", err)
+        // `file` is an instance of a File object that refers to your new file.
       });
       return res.status(200).json({
         status: 'success',

@@ -1,3 +1,4 @@
+import { Bucket } from "@google-cloud/storage"
 import * as admin from "firebase-admin"
 import * as functions from "firebase-functions"
 
@@ -14,6 +15,6 @@ admin.initializeApp({
 
 const db= admin.firestore()
 db.settings({ ignoreUndefinedProperties: true })
-const bucket = admin.storage().bucket();
+const bucket: Bucket = admin.storage().bucket();
 export { admin, db, bucket }
 
