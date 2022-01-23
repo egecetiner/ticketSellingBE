@@ -201,4 +201,4 @@ app.*.yaml
 functions/**/.env*
 !functions/**/.env.sample.yaml
 
-src/config/
+config/
