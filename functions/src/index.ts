@@ -1,27 +1,47 @@
-import * as express from "express";
-import * as functions from "firebase-functions";
-import { addEvent, deleteEvent, getAllEvents, getEvent, imageUpload, updateEvent } from "./eventController";
-import { addUser, deleteUser, getAllUsers, getUser, updateUser } from './userController';
+import * as express from 'express';
+import * as functions from 'firebase-functions';
+import {
+  addEvent,
+  deleteEvent,
+  getAllEvents,
+  getEvent,
+  updateEvent,
+} from './eventController';
+import {form, iyzico} from './paymentController';
+import {
+  deleteTicket,
+  getAllTickets,
+  getTicket,
+  updateTicket,
+} from './ticketController';
+import {
+  addUser,
+  deleteUser,
+  getAllUsers,
+  getUser,
+  updateUser,
+} from './userController';
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
+const app = express();
 
-const app = express()
+app.get('/users/:userId', getUser);
+app.post('/users/:userId', addUser);
+app.get('/users/', getAllUsers);
+app.put('/users/:userId', updateUser);
+app.delete('/users/:userId', deleteUser);
 
-app.get('/users/:userId', getUser)
-app.post('/users/:userId', addUser)
-app.get('/users/', getAllUsers)
-app.put('/users/:userId', updateUser)
-app.delete('/users/:userId', deleteUser)
+app.post('/events/', addEvent);
+app.get('/events/:eventId', getEvent);
+app.get('/events/', getAllEvents);
+app.put('/events/:eventId', updateEvent);
+app.delete('/events/:eventId', deleteEvent);
 
+app.get('/tickets/:ticketId', getTicket);
+app.get('/tickets/', getAllTickets);
+app.put('/tickets/:ticketId', updateTicket);
+app.delete('/tickets/:ticketId', deleteTicket);
 
-app.post('/events/',addEvent )
-app.post('/events/addImage',imageUpload)
-app.get('/events/:eventId', getEvent)
-app.get('/events/', getAllEvents)
-app.put('/events/:eventId', updateEvent)
-app.delete('/events/:eventId', deleteEvent)
+app.post('/payment/form/:userId/:eventId', form);
+app.post('/payment/make-payment/', iyzico);
 
-exports.app = functions.region("europe-west1").https.onRequest(app)
-
+exports.app = functions.region('europe-west1').https.onRequest(app);
