@@ -1,0 +1,27 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express = require("express");
+const functions = require("firebase-functions");
+const eventController_1 = require("./eventController");
+const paymentController_1 = require("./paymentController");
+const ticketController_1 = require("./ticketController");
+const userController_1 = require("./userController");
+const app = express();
+app.get('/users/:userId', userController_1.getUser);
+app.post('/users/:userId', userController_1.addUser);
+app.get('/users/', userController_1.getAllUsers);
+app.put('/users/:userId', userController_1.updateUser);
+app.delete('/users/:userId', userController_1.deleteUser);
+app.post('/events/', eventController_1.addEvent);
+app.get('/events/:eventId', eventController_1.getEvent);
+app.get('/events/', eventController_1.getAllEvents);
+app.put('/events/:eventId', eventController_1.updateEvent);
+app.delete('/events/:eventId', eventController_1.deleteEvent);
+app.get('/tickets/:ticketId', ticketController_1.getTicket);
+app.get('/tickets/', ticketController_1.getAllTickets);
+app.put('/tickets/:ticketId', ticketController_1.updateTicket);
+app.delete('/tickets/:ticketId', ticketController_1.deleteTicket);
+app.post('/payment/form/:userId/:eventId', paymentController_1.form);
+app.post('/payment/make-payment/', paymentController_1.iyzico);
+exports.app = functions.region('europe-west1').https.onRequest(app);
+//# sourceMappingURL=index.js.map
